@@ -19,7 +19,7 @@ main = do
 app :: Application
 app req f =
   case pathInfo req of
-    ["posts"] -> f $ sendText "POSTS"
+    ["news"] -> f $ sendText "NEWS"
     ["authors"] ->
       case requestMethod req of
         "GET" -> f $ sendText "GETTING AUTHORS" -- for admins
