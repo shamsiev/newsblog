@@ -1,1 +1,1 @@
-# NEWSBLOG
+[NEWSBLOG](/img/newsblog.png "NEWSBLOG")
