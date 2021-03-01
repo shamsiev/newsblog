@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 765aa0b920ec66bd83703792ca86ef9ff3bfdfd155e24dd0e26745f7e19f1ea3
+-- hash: 733f5ecf2a0ceae5217f19134d21063c0f18f8f580fa84c4618be56794f85d8b
 
 name:           newsblog
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Logger
+      Logger.FileLogger
       Logger.StdLogger
   other-modules:
       Paths_newsblog
