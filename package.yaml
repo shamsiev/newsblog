@@ -30,6 +30,7 @@ dependencies:
 - bytestring
 - containers
 - time
+- hspec
 
 library:
   source-dirs: src
