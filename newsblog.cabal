@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 733f5ecf2a0ceae5217f19134d21063c0f18f8f580fa84c4618be56794f85d8b
+-- hash: 3cfdbe47653097f418f93e39a398ddb19da5984a142c752fe037a3780dddd922
 
 name:           newsblog
 version:        0.1.0.0
@@ -28,8 +28,9 @@ source-repository head
 library
   exposed-modules:
       Logger
-      Logger.FileLogger
-      Logger.StdLogger
+      Logger.Console
+      Logger.File
+      Logger.Test
   other-modules:
       Paths_newsblog
   hs-source-dirs:
@@ -40,7 +41,6 @@ library
     , bytestring
     , containers
     , http-types
-    , mtl
     , text
     , time
     , wai
@@ -61,7 +61,6 @@ executable newsblog-exe
     , bytestring
     , containers
     , http-types
-    , mtl
     , newsblog
     , text
     , time
@@ -84,7 +83,6 @@ test-suite newsblog-test
     , bytestring
     , containers
     , http-types
-    , mtl
     , newsblog
     , text
     , time

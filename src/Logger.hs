@@ -1,38 +1,32 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Logger where
+module Logger
+  ( Handle(..)
+  , Logger(..)
+  , Level(..)
+  , Time
+  , Message
+  , debug
+  , info
+  , warning
+  , error
+  ) where
 
 import Data.Text (Text, unpack)
-import Data.Yaml (FromJSON(parseJSON), (.:), withObject, withText)
+import Data.Yaml (FromJSON(parseJSON), withText)
 import Prelude hiding (error, log)
+import Text.Printf (printf)
 
---------------------------------------------------------------------------------
-newtype Handle =
-  Handle
-    { log :: Level -> Text -> IO ()
-    }
+type Time = String
 
---------------------------------------------------------------------------------
-data Config =
-  Config
-    { cType :: Text
-    , cLevel :: Level
-    , cFilePath :: Maybe FilePath
-    }
-  deriving (Show)
+type Message = Text
 
-instance FromJSON Config where
-  parseJSON =
-    withObject "Logger.Config" $ \o ->
-      Config <$> o .: "type" <*> o .: "level" <*> o .: "file_path"
-
---------------------------------------------------------------------------------
 data Level
   = Debug
   | Info
   | Warning
   | Error
-  deriving (Ord, Eq)
+  deriving (Eq, Ord)
 
 instance Show Level where
   show Debug = "DEBUG"
@@ -48,17 +42,31 @@ instance FromJSON Level where
         "info" -> pure Info
         "warning" -> pure Warning
         "error" -> pure Error
-        _ -> fail $ "Unknown level: " ++ unpack t
+        _ -> fail $ "Unknown log_level: " <> unpack t
 
---------------------------------------------------------------------------------
-debug :: Handle -> Text -> IO ()
-debug h = log h Debug
+data Logger
+  = NoLogger
+  | Logger Time Level Message
+  deriving (Eq)
 
-info :: Handle -> Text -> IO ()
-info h = log h Info
+instance Show Logger where
+  show NoLogger = "NoLogger"
+  show (Logger time level message) =
+    printf "[%s %s] %s" time (show level) message
 
-warning :: Handle -> Text -> IO ()
-warning h = log h Warning
+newtype Handle r =
+  Handle
+    { log :: Level -> Message -> IO r
+    }
 
-error :: Handle -> Text -> IO ()
-error h = log h Error
+debug :: Handle r -> Message -> IO r
+debug = (`log` Debug)
+
+info :: Handle r -> Message -> IO r
+info = (`log` Info)
+
+warning :: Handle r -> Message -> IO r
+warning = (`log` Warning)
+
+error :: Handle r -> Message -> IO r
+error = (`log` Error)

@@ -29,7 +29,6 @@ dependencies:
 - text
 - bytestring
 - containers
-- mtl
 - time
 
 library:
